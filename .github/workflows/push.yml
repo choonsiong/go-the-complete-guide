@@ -1,0 +1,24 @@
+name: push
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test code
+        run: echo "testing..."
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build code
+        run: echo "building..."
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy code
+        run: echo "deploying..."
