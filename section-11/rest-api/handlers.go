@@ -39,6 +39,7 @@ func getEventByID(c *gin.Context) {
 			"message": "could not fetch event",
 			"error":   err,
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
