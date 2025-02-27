@@ -14,7 +14,7 @@ func getEvents(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get all events",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -30,7 +30,7 @@ func getEventByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "failed to parse id param",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -39,7 +39,8 @@ func getEventByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get event by id",
-			"error":   err,
+			"id":      id,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -56,7 +57,7 @@ func newEvent(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "failed to bind json to event struct",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -68,7 +69,7 @@ func newEvent(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to save event",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -85,7 +86,7 @@ func updateEventByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "failed to parse id param",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -94,7 +95,8 @@ func updateEventByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get event by id",
-			"error":   err,
+			"id":      id,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -104,7 +106,7 @@ func updateEventByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "failed to bind json to event struct",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -116,7 +118,8 @@ func updateEventByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to update event",
-			"error":   err,
+			"id":      id,
+			"error":   err.Error(),
 		})
 		return
 	}
