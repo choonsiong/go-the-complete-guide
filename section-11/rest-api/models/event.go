@@ -38,7 +38,24 @@ func (e Event) Save() (*Event, error) {
 	return &e, nil
 }
 
-// Update updates the event or returns error if any
+// Delete deletes an event from the database or returns an error if any
+func (e Event) Delete() error {
+	query := "DELETE FROM events WHERE id = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Update updates the event in the database or returns error if any
 func (e Event) Update() error {
 	query := "UPDATE events SET name = ?, description = ?, location = ?, datetime = ? WHERE id=?"
 	stmt, err := db.DB.Prepare(query)

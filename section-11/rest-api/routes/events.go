@@ -80,6 +80,42 @@ func newEvent(c *gin.Context) {
 	})
 }
 
+// deleteEventByID delete an event by id
+func deleteEventByID(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "failed to parse id param",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	event, err := models.GetEventByID(int(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "failed to get event by id",
+			"id":      id,
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = event.Delete()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "failed to delete event",
+			"id":      id,
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+	})
+}
+
 // updateEventByID update an event by id
 func updateEventByID(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
