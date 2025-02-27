@@ -2,7 +2,7 @@ package main
 
 import (
 	"example.com/rest-api/db"
-	"example.com/rest-api/events"
+	"example.com/rest-api/routes"
 	"github.com/gin-gonic/gin"
 )
 

@@ -14,12 +14,12 @@ type Event struct {
 	UserID      int       `json:"user_id"`
 }
 
-//var events []Event = []Event{}
+//var routes []Event = []Event{}
 
 func (e Event) Save() error {
-	//events = append(events, e)
+	//routes = append(routes, e)
 
-	query := "INSERT INTO events(name, description, location, datetime, user_id) VALUES (?, ?, ?, ?, ?)"
+	query := "INSERT INTO routes(name, description, location, datetime, user_id) VALUES (?, ?, ?, ?, ?)"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (e Event) Save() error {
 }
 
 func GetEventByID(id int) (*Event, error) {
-	query := "SELECT * FROM events WHERE id=?"
+	query := "SELECT * FROM routes WHERE id=?"
 	row := db.DB.QueryRow(query, id)
 	var event Event
 	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
@@ -53,7 +53,7 @@ func GetEventByID(id int) (*Event, error) {
 }
 
 func GetAllEvents() ([]Event, error) {
-	query := "SELECT * FROM events"
+	query := "SELECT * FROM routes"
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err

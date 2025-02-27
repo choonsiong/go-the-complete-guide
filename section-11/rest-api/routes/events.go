@@ -12,14 +12,14 @@ func getEvents(c *gin.Context) {
 	events, err := models.GetAllEvents()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "could not fetch events",
+			"message": "could not fetch routes",
 			"error":   err,
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
-		"events":  events,
+		"routes":  events,
 	})
 }
 
