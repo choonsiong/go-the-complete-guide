@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// signUp sign up a new user
+// signUp register a new user
 func signUp(c *gin.Context) {
 	var user models.User
 	err := c.ShouldBindJSON(&user)
