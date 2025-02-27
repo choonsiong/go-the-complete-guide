@@ -14,12 +14,9 @@ type Event struct {
 	UserID      int       `json:"user_id"`
 }
 
-//var routes []Event = []Event{}
-
+// Save insert an event to the database or returns an error if any
 func (e Event) Save() error {
-	//routes = append(routes, e)
-
-	query := "INSERT INTO routes(name, description, location, datetime, user_id) VALUES (?, ?, ?, ?, ?)"
+	query := "INSERT INTO events(name, description, location, datetime, user_id) VALUES (?, ?, ?, ?, ?)"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
@@ -41,8 +38,26 @@ func (e Event) Save() error {
 	return nil
 }
 
+// Update updates the event or returns error if any
+func (e Event) Update() error {
+	query := "UPDATE events SET name = ?, description = ?, location = ?, datetime = ? WHERE id=?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetEventByID returns a pointer to Event of the given id or error if any
 func GetEventByID(id int) (*Event, error) {
-	query := "SELECT * FROM routes WHERE id=?"
+	query := "SELECT * FROM events WHERE id=?"
 	row := db.DB.QueryRow(query, id)
 	var event Event
 	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
@@ -52,8 +67,9 @@ func GetEventByID(id int) (*Event, error) {
 	return &event, nil
 }
 
+// GetAllEvents returns a slice of Event or error if any
 func GetAllEvents() ([]Event, error) {
-	query := "SELECT * FROM routes"
+	query := "SELECT * FROM events"
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err

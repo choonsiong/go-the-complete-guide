@@ -6,4 +6,5 @@ func RegisterRoutes(router *gin.Engine) {
 	router.GET("/events", getEvents)
 	router.GET("/events/:id", getEventByID)
 	router.POST("/events", newEvent)
+	router.PUT("/events/:id", updateEventByID)
 }
