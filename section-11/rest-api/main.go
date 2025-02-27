@@ -9,6 +9,7 @@ func main() {
 	server := gin.Default()
 
 	server.GET("/events", getEvents)
+	server.POST("/events", newEvent)
 
 	server.Run(":8080")
 }
