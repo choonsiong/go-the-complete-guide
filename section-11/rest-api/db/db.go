@@ -36,3 +36,7 @@ func createTables() {
 		panic(err)
 	}
 }
+
+func InsertEvent() {
+
+}
