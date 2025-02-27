@@ -15,27 +15,27 @@ type Event struct {
 }
 
 // Save insert an event to the database or returns an error if any
-func (e Event) Save() error {
+func (e Event) Save() (*Event, error) {
 	query := "INSERT INTO events(name, description, location, datetime, user_id) VALUES (?, ?, ?, ?, ?)"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer stmt.Close()
 
 	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserID)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	e.ID = int(id)
 
-	return nil
+	return &e, nil
 }
 
 // Update updates the event or returns error if any
