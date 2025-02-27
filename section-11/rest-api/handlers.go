@@ -1,15 +1,24 @@
 package main
 
 import (
-	"example.com/rest-api/models"
+	models "example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
 )
 
 func getEvents(c *gin.Context) {
+	events, err := models.GetAllEvents()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "could not fetch events",
+			"error":   err,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"events": models.GetAllEvents(),
+		"message": "ok",
+		"events":  events,
 	})
 }
 
@@ -27,7 +36,14 @@ func newEvent(c *gin.Context) {
 	e.UserID = 1
 	e.DateTime = time.Now()
 
-	e.Save()
+	err = e.Save()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "could not save event",
+			"error":   err,
+		})
+		return
+	}
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "event created",
