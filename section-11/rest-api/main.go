@@ -13,6 +13,7 @@ func main() {
 	server := gin.Default()
 
 	server.GET("/events", getEvents)
+	server.GET("/events/:id", getEventByID)
 	server.POST("/events", newEvent)
 
 	server.Run(":8080")

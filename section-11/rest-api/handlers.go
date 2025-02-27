@@ -4,6 +4,7 @@ import (
 	models "example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -19,6 +20,29 @@ func getEvents(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 		"events":  events,
+	})
+}
+
+func getEventByID(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "could not fetch event",
+			"error":   err,
+		})
+		return
+	}
+
+	event, err := models.GetEventByID(int(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "could not fetch event",
+			"error":   err,
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+		"event":   event,
 	})
 }
 
