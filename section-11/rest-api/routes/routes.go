@@ -8,4 +8,6 @@ func RegisterRoutes(router *gin.Engine) {
 	router.POST("/events", newEvent)
 	router.PUT("/events/:id", updateEventByID)
 	router.DELETE("/events/:id", deleteEventByID)
+
+	router.POST("/signup", signUp)
 }
