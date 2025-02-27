@@ -1,7 +1,7 @@
-package main
+package routes
 
 import (
-	models "example.com/rest-api/models"
+	"example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

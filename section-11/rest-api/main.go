@@ -2,6 +2,7 @@ package main
 
 import (
 	"example.com/rest-api/db"
+	"example.com/rest-api/events"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,10 +12,6 @@ import (
 func main() {
 	db.InitDB()
 	server := gin.Default()
-
-	server.GET("/events", getEvents)
-	server.GET("/events/:id", getEventByID)
-	server.POST("/events", newEvent)
-
+	routes.RegisterRoutes(server)
 	server.Run(":8080")
 }
