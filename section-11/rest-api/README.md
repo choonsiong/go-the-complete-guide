@@ -1,0 +1,1 @@
+This is a REST API demo project for https://www.udemy.com/course/go-the-complete-guide/
