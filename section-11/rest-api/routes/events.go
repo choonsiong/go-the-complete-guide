@@ -156,12 +156,19 @@ func updateEventByID(c *gin.Context) {
 		return
 	}
 
-	_, err = models.GetEventByID(int(id))
+	event, err := models.GetEventByID(int(id))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get event by id",
 			"id":      id,
 			"error":   err.Error(),
+		})
+		return
+	}
+
+	if event.UserID != c.GetInt("userID") {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "unauthorized request",
 		})
 		return
 	}
