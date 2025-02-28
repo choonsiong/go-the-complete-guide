@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// login login a user
+// login validates and login user
 func login(c *gin.Context) {
 	var user models.User
 	err := c.ShouldBindJSON(&user)
