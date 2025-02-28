@@ -15,14 +15,15 @@ type User struct {
 func (u User) ValidateCredential() error {
 	query := "SELECT password FROM users WHERE email = ?"
 	row := db.DB.QueryRow(query, u.Email)
+
 	var retrievedPassword string
 	err := row.Scan(&retrievedPassword)
 	if err != nil {
-		return err
+		return errors.New("invalid credentials 😜")
 	}
 
 	if !utils.IsPasswordValid(retrievedPassword, u.Password) {
-		return errors.New("invalid password")
+		return errors.New("invalid credentials 😜")
 	}
 
 	return nil

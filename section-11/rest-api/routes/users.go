@@ -17,6 +17,19 @@ func login(c *gin.Context) {
 		})
 		return
 	}
+
+	err = user.ValidateCredential()
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "failed to login user",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+	})
 }
 
 // signUp register a new user
