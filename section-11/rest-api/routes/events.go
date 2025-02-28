@@ -2,6 +2,7 @@ package routes
 
 import (
 	"example.com/rest-api/models"
+	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -52,8 +53,25 @@ func getEventByID(c *gin.Context) {
 
 // newEvent insert a new event
 func newEvent(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "unauthorized request",
+		})
+		return
+	}
+
+	email, uid, err := utils.VerifyToken(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "unauthorized request",
+			"error":   err.Error(),
+		})
+		return
+	}
+
 	var event models.Event
-	err := c.ShouldBindJSON(&event)
+	err = c.ShouldBindJSON(&event)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "failed to bind json to event struct",
@@ -62,7 +80,7 @@ func newEvent(c *gin.Context) {
 		return
 	}
 
-	event.UserID = 1
+	event.UserID = uid
 	event.DateTime = time.Now()
 
 	savedEvent, err := event.Save()
@@ -76,6 +94,8 @@ func newEvent(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "success",
+		"email":   email,
+		"user_id": uid,
 		"event":   savedEvent,
 	})
 }

@@ -22,7 +22,7 @@ func login(c *gin.Context) {
 	err = user.ValidateCredential()
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "failed to login user",
+			"message": "failed to authenticate user",
 			"error":   err.Error(),
 		})
 		return
@@ -30,8 +30,8 @@ func login(c *gin.Context) {
 
 	token, err := utils.GenerateToken(user.Email, user.ID)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "failed to login user",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "failed to authenticate user",
 			"error":   err.Error(),
 		})
 		return

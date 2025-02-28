@@ -35,6 +35,8 @@ func (e Event) Save() (*Event, error) {
 
 	e.ID = int(id)
 
+	// We can also change to use a pointer receiver, so we don't need
+	// to return *Event here
 	return &e, nil
 }
 
