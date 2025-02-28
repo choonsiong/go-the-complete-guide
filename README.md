@@ -7,9 +7,7 @@ https://hub.docker.com/r/choonsiong/go-rest-api
 To run the container:
 ```
 $ docker pull choonsiong/go-rest-api
-$
 $ docker run -d -p 8080:8080 --name go-rest-api choonsiong/go-rest-api
-$
 $ curl -s http://localhost:8080/events | json_pp
 {
    "events" : [
