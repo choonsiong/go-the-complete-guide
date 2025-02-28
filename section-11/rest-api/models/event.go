@@ -107,3 +107,20 @@ func GetAllEvents() ([]Event, error) {
 
 	return events, nil
 }
+
+// Register registers the given userID for an event
+func (e *Event) Register(userID int) error {
+	query := "INSERT INTO registrations (event_id, user_id) VALUES (?, ?)"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
