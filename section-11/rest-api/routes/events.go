@@ -92,7 +92,7 @@ func newEvent(c *gin.Context) {
 	event.UserID = uid
 	event.DateTime = time.Now()
 
-	savedEvent, err := event.Save()
+	err = event.Save()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to save event",
@@ -105,7 +105,7 @@ func newEvent(c *gin.Context) {
 		"message": "success",
 		"email":   email,
 		"user_id": uid,
-		"event":   savedEvent,
+		"event":   event,
 	})
 }
 

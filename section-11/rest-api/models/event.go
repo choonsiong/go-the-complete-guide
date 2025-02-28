@@ -15,33 +15,31 @@ type Event struct {
 }
 
 // Save insert an event to the database or returns an error if any
-func (e Event) Save() (*Event, error) {
+func (e *Event) Save() error {
 	query := "INSERT INTO events(name, description, location, datetime, user_id) VALUES (?, ?, ?, ?, ?)"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer stmt.Close()
 
 	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	e.ID = int(id)
-
-	// We can also change to use a pointer receiver, so we don't need
-	// to return *Event here
-	return &e, nil
+	
+	return nil
 }
 
 // Delete deletes an event from the database or returns an error if any
-func (e Event) Delete() error {
+func (e *Event) Delete() error {
 	query := "DELETE FROM events WHERE id = ?"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
@@ -58,7 +56,7 @@ func (e Event) Delete() error {
 }
 
 // Update updates the event in the database or returns error if any
-func (e Event) Update() error {
+func (e *Event) Update() error {
 	query := "UPDATE events SET name = ?, description = ?, location = ?, datetime = ? WHERE id=?"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
@@ -111,6 +109,23 @@ func GetAllEvents() ([]Event, error) {
 // Register registers the given userID for an event
 func (e *Event) Register(userID int) error {
 	query := "INSERT INTO registrations (event_id, user_id) VALUES (?, ?)"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// CancelRegistration deletes the event registration for the given userID
+func (e *Event) CancelRegistration(userID int) error {
+	query := "DELETE FROM registrations WHERE event_id = ? AND user_id = ?"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
