@@ -1,7 +1,9 @@
 package models
 
 import (
+	"errors"
 	"example.com/rest-api/db"
+	"example.com/rest-api/utils"
 )
 
 type User struct {
@@ -19,7 +21,15 @@ func (u User) Save() (*User, error) {
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(u.Email, u.Password)
+	encryptedPassword, err := utils.HashPassword(u.Password)
+	if err != nil {
+		return nil, err
+	}
+	if encryptedPassword == "" {
+		return nil, errors.New("encrypted password is empty")
+	}
+
+	result, err := stmt.Exec(u.Email, encryptedPassword)
 	if err != nil {
 		return nil, err
 	}

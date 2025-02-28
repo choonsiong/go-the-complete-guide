@@ -10,6 +10,7 @@ import (
 // Dependencies:
 // go get -u github.com/gin-gonic/gin
 // go get github.com/mattn/go-sqlite3
+// go get -u golang.org/x/crypto
 
 func main() {
 	db.InitDB()
