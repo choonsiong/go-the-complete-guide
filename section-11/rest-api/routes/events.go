@@ -130,6 +130,13 @@ func deleteEventByID(c *gin.Context) {
 		return
 	}
 
+	if event.UserID != c.GetInt("userID") {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "unauthorized delete request",
+		})
+		return
+	}
+
 	err = event.Delete()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -168,7 +175,7 @@ func updateEventByID(c *gin.Context) {
 
 	if event.UserID != c.GetInt("userID") {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "unauthorized request",
+			"message": "unauthorized update request",
 		})
 		return
 	}
