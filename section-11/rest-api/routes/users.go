@@ -6,6 +6,19 @@ import (
 	"net/http"
 )
 
+// login login a user
+func login(c *gin.Context) {
+	var user models.User
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "failed to bind json to user struct",
+			"error":   err.Error(),
+		})
+		return
+	}
+}
+
 // signUp register a new user
 func signUp(c *gin.Context) {
 	var user models.User

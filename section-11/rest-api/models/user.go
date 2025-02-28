@@ -12,6 +12,22 @@ type User struct {
 	Password string `json:"password" binding:"required"`
 }
 
+func (u User) ValidateCredential() error {
+	query := "SELECT password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+	var retrievedPassword string
+	err := row.Scan(&retrievedPassword)
+	if err != nil {
+		return err
+	}
+
+	if !utils.IsPasswordValid(retrievedPassword, u.Password) {
+		return errors.New("invalid password")
+	}
+
+	return nil
+}
+
 // Save insert a new user to the database or returns an error if any
 func (u User) Save() (*User, error) {
 	query := "INSERT INTO users (email, password) VALUES (?, ?)"
