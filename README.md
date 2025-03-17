@@ -1,3 +1,7 @@
+# Resources
+
+- [mschwarzmueller/go-complete-guide-resources](https://github.com/mschwarzmueller/go-complete-guide-resources)
+
 # Notes
 
 By the way, you can find the Docker image for section 11 that related to building the backend REST API here: 
